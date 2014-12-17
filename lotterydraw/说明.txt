@@ -1,0 +1,4 @@
+SurfaceView实现抽奖转盘
+
+自定义SurfaceView 的一般步骤如HowToUseSurfaceView所示，需要实现一些接口
+
