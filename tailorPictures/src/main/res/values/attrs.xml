@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 圆角大小 -->
     <attr name="borderRadius" format="dimension" />
+    <!-- 形状，圆角矩形或圆形 -->
     <attr name="type">
         <enum name="circle" value="0" />
         <enum name="round" value="1" />
     </attr>
-
     <attr name="src" format="reference"></attr>
 
-    <declare-styleable name="CricleImageView">
+    <!-- 自定义圆形 -->
+    <declare-styleable name="AngularlyImageView">
         <attr name="borderRadius" />
         <attr name="type" />
         <attr name="src" />

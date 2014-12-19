@@ -3,6 +3,7 @@ package com.henry.tailorpictures.widget.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -10,70 +11,80 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+
 import com.henry.tailorpictures.R;
 
 /**
- * Created by holiy on 2014/12/17.
+ * 自定义View，实现圆角，圆形等效果
  */
-public class AngularlyImageView extends View {
+public class AngularlyImageView extends View
+{
+
     /**
-     * 类型为圆形或者为圆角
+     * TYPE_CIRCLE / TYPE_ROUND
      */
     private int type;
     private static final int TYPE_CIRCLE = 0;
     private static final int TYPE_ROUND = 1;
+
     /**
-     * 原图片
+     * 图片
      */
     private Bitmap mSrc;
+
     /**
      * 圆角的大小
      */
     private int mRadius;
+
     /**
-     * 控件宽度
+     * 控件的宽度
      */
     private int mWidth;
     /**
-     * 控件高度
+     * 控件的高度
      */
     private int mHeight;
 
-    public AngularlyImageView(Context context) {
-        super(context, null);
+    public AngularlyImageView(Context context, AttributeSet attrs)
+    {
+        this(context, attrs, 0);
     }
 
-    public AngularlyImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public AngularlyImageView(Context context)
+    {
+        this(context, null);
     }
 
     /**
-     * 初始化自定义参数
+     * 初始化一些自定义的参数
      * @param context
      * @param attrs
      * @param defStyle
      */
-    public AngularlyImageView(Context context, AttributeSet attrs, int defStyle) {
+    public AngularlyImageView(Context context, AttributeSet attrs, int defStyle)
+    {
         super(context, attrs, defStyle);
+
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.CricleImageView, defStyle, 0);
+                R.styleable.AngularlyImageView, defStyle, 0);
+
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++)
         {
             int attr = a.getIndex(i);
             switch (attr)
             {
-                case R.styleable.CricleImageView_src:
+                case R.styleable.AngularlyImageView_src:
                     mSrc = BitmapFactory.decodeResource(getResources(),
                             a.getResourceId(attr, 0));
                     break;
-                case R.styleable.CricleImageView_type:
+                case R.styleable.AngularlyImageView_type:
                     type = a.getInt(attr, 0);// 默认为Circle
                     break;
-                case R.styleable.CricleImageView_borderRadius:
+                case R.styleable.AngularlyImageView_borderRadius:
                     mRadius = a.getDimensionPixelSize(attr, (int) TypedValue
                             .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f,
                                     getResources().getDisplayMetrics()));// 默认为10DP
@@ -84,12 +95,11 @@ public class AngularlyImageView extends View {
     }
 
     /**
-     * 计算控件的高度
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
+     * 计算控件的高度和宽度
      */
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
         // super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         /**
          * 设置宽度
@@ -108,10 +118,11 @@ public class AngularlyImageView extends View {
             if (specMode == MeasureSpec.AT_MOST)// wrap_content
             {
                 mWidth = Math.min(desireByImg, specSize);
-            } else
-
+            } else{
                 mWidth = desireByImg;
+            }
         }
+
         /***
          * 设置高度
          */
@@ -131,38 +142,45 @@ public class AngularlyImageView extends View {
             } else
                 mHeight = desire;
         }
+
         setMeasuredDimension(mWidth, mHeight);
+
     }
 
     /**
-     * 绘制
-     * @param canvas
+     * 绘制图片
      */
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        switch (type){
-            case TYPE_CIRCLE://绘制圆形
+    protected void onDraw(Canvas canvas)
+    {
+        switch (type)
+        {
+            // 如果是TYPE_CIRCLE绘制圆形
+            case TYPE_CIRCLE:
                 int min = Math.min(mWidth, mHeight);
+                /**
+                 * 长度如果不一致，按小的值进行压缩
+                 */
                 mSrc = Bitmap.createScaledBitmap(mSrc, min, min, false);
                 canvas.drawBitmap(createCircleImage(mSrc, min), 0, 0, null);
                 break;
-            case TYPE_ROUND://绘制圆角矩形
+            case TYPE_ROUND:
                 canvas.drawBitmap(createRoundConerImage(mSrc), 0, 0, null);
                 break;
         }
     }
 
     /**
-     * 绘制圆形
+     * 根据原图和变长绘制圆形图片
      * @param source
      * @param min
      * @return
      */
-    private Bitmap createCircleImage(Bitmap source, int min){
+    private Bitmap createCircleImage(Bitmap source, int min)
+    {
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
-        Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
+        Bitmap target = Bitmap.createBitmap(min, min, Config.ARGB_8888);
         /**
          * 产生一个同样大小的画布
          */
@@ -175,25 +193,28 @@ public class AngularlyImageView extends View {
          * 使用SRC_IN，参考上面的说明
          */
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        /**
+         * 绘制图片
+         */
         canvas.drawBitmap(source, 0, 0, paint);
         return target;
     }
 
     /**
-     * 绘制圆角矩形
+     * 根据原图添加圆角
      * @param source
      * @return
      */
-    private Bitmap createRoundConerImage(Bitmap source){
+    private Bitmap createRoundConerImage(Bitmap source)
+    {
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
-        Bitmap target = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+        Bitmap target = Bitmap.createBitmap(mWidth, mHeight, Config.ARGB_8888);
         Canvas canvas = new Canvas(target);
-        RectF rectF = new RectF(0, 0, source.getWidth(), source.getHeight());
-        canvas.drawRoundRect(rectF, mRadius, mRadius, paint);
+        RectF rect = new RectF(0, 0, source.getWidth(), source.getHeight());
+        canvas.drawRoundRect(rect, mRadius, mRadius, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(source, 0, 0, paint);
         return target;
     }
-
 }
