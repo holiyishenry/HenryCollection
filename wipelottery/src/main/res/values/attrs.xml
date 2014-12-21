@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--背景图片-->
+    <attr name="award_background_image" format="reference"/>
+    <!--表面图片-->
+    <attr name="award_surface_imgae" format="reference"/>
+    <!--中奖信息-->
+    <attr name="award_text" format="string"/>
+    <!--中奖文字大小，默认为14sp-->
+    <attr name="award_text_size" format="dimension"/>
+    <!--自定义刮刮乐-->
+    <declare-styleable name="WipelotteryView">
+        <attr name="award_background_image"/>
+        <attr name="award_surface_imgae"/>
+        <attr name="award_text"/>
+        <attr name="award_text_size"/>
+    </declare-styleable>
+</resources>
