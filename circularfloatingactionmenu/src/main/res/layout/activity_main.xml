@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/float_menu_layout"
      >
     <ImageView
         android:layout_width="match_parent"
@@ -10,4 +11,14 @@
     <include layout="@layout/menu_layout" >
     </include>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/remove_img"
+            style="@style/MenuItemStyle"
+            android:background="@drawable/circle5"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
 </FrameLayout>
