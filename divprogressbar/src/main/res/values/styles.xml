@@ -5,4 +5,38 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!--一张图片实现的旋转效果-->
+    <style name="myProgressBarStyleLarge" >
+        　　<item name="android:indeterminateDrawable">@drawable/rotate_progress_image</item>
+        　　<item name="android:minWidth">76dip</item>
+        　　<item name="android:maxWidth">76dip</item>
+        　　<item name="android:minHeight">76dip</item>
+        　　<item name="android:maxHeight">76dip</item>
+    </style>
+    <!--多张图片实现的动画效果-->
+    <style name="myAnimationProgressBarStyle" >
+        　　<item name="android:indeterminateDrawable">@anim/image_animation_progress</item>
+        　　<!--以下参数在使用wrap_content时有用-->
+            <item name="android:minWidth">50dip</item>
+        　　<item name="android:maxWidth">50dip</item>
+        　　<item name="android:minHeight">50dip</item>
+        　　<item name="android:maxHeight">50dip</item>
+    </style>
+    <!--颜色变化实现的动画效果-->
+    <style name="myColorProgressBarStyle" >
+        　　<item name="android:indeterminateDrawable">@drawable/colorful_progress</item>
+        　　<item name="android:minWidth">76dip</item>
+        　　<item name="android:maxWidth">76dip</item>
+        　　<item name="android:minHeight">76dip</item>
+        　　<item name="android:maxHeight">76dip</item>
+    </style>
+
+    <!--兔纸动画效果-->
+    <style name="myRabbitAnimProgressBarStyle">
+        　　<item name="android:indeterminateDrawable">@anim/rabbit_anim_progress</item>
+        　　<item name="android:minWidth">76dip</item>
+        　　<item name="android:maxWidth">76dip</item>
+        　　<item name="android:minHeight">76dip</item>
+        　　<item name="android:maxHeight">76dip</item>
+    </style>
 </resources>
