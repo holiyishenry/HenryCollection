@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:background="#F5F5F5"
+        android:layout_marginTop="13dp"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/tab_index_layout"
+            style="@style/fragment_bottom_item_layout"
+            android:onClick="onTabClicked"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_index_selector"/>
+            <TextView
+                style="@style/fragment_bottom_item_text"
+                android:id="@+id/index_tv"
+                android:text="首页"
+                android:textColor="#FF6F3B91" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_theme_layout"
+            android:onClick="onTabClicked"
+            style="@style/fragment_bottom_item_layout">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_theme_selector"/>
+            <TextView
+                style="@style/fragment_bottom_item_text"
+                android:id="@+id/theme_tv"
+                android:text="主题" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="3dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:onClick="onTabClicked"
+            android:id="@+id/tab_message_layout"
+            style="@style/fragment_bottom_item_layout" >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_message_selector"/>
+            <TextView
+                style="@style/fragment_bottom_item_text"
+                android:id="@+id/message_tv"
+                android:text="消息" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:onClick="onTabClicked"
+            android:id="@+id/tab_person_info_layout"
+            style="@style/fragment_bottom_item_layout">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_person_info_selector"/>
+            <TextView
+                style="@style/fragment_bottom_item_text"
+                android:id="@+id/person_tv"
+                android:text="我" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="13dp"
+        android:layout_height="1px"
+        android:background="#ccc">
+    </View>
+    <ImageView
+        android:id="@+id/publish_content_menu"
+        android:layout_centerHorizontal="true"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="5dp"
+        android:src="@drawable/icon_nav_add"
+        android:background="@drawable/icon_menuback"/>
+</RelativeLayout>
+

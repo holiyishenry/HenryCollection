@@ -1,0 +1,10 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="view_margin">8dp</dimen>
+    <!-- 页面底部bar的样式 -->
+    <dimen name="activity_index_botton_margin">3dp</dimen>
+    <dimen name="activity_index_text_size">12sp</dimen>
+
+</resources>

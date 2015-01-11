@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--
+    interpolator定义一个动画的变化率（the rate of change）。这使得基本的动画效果(alpha, scale, translate, rotate）得以加速，减速，重复等。
+    android:interpolator="@android:anim/decelerate_interpolator"
+    -->
+    <translate
+        android:duration="1500"
+        android:fromYDelta="0.0"
+        android:toYDelta="12.0%" />
+
+</set>

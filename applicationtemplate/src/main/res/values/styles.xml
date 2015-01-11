@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <!-- fragment 底部按钮样式 start-->
+    <style name="fragment_bottom_item_layout">
+        <item name="android:layout_width">3dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="fragment_bottom_item_text">
+        <item name="android:textColor">@color/fragment_tab_text_unselected</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/activity_index_botton_margin</item>
+        <item name="android:textSize">@dimen/activity_index_text_size</item>
+    </style>
+    <!-- fragment 底部按钮样式 end-->
+
+    <!--浮动菜单样式 start-->
+    <style name="MenuStyle">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="MenuItemStyle">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+    </style>
+    <!--菜单弹出动画-->
+    <style name="popupMenuWindowAnim">
+        <item name="android:windowEnterAnimation">@anim/menu_footer_appear</item> 
+        <item name="android:windowExitAnimation">@anim/menu_footer_disappear</item>
+    </style>
+    <!--浮动菜单样式 end-->
+
+</resources>

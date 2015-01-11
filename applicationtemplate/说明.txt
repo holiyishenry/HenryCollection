@@ -1,0 +1,5 @@
+项目的文件结构：
+1、四个模块对应四个“modules”，将每个模块的Activity、services、Adapter等分开，便于管理
+2、“entrance”包存放整个软件的入口程序如MainActivity，WelcomeActivity，GuideActivity，Application等；
+3、“common”包存放公用库，如网络请求类、加密类、图片加载类、存储封装等，将各种功能类抽象出来，提供给各模块调用,
+    如各模块有自定义的view、其他工具等，统一在common下创建

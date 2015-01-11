@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="framgent_background_color">#ddd</color>
+    <color name="fragment_tab_text_selected">#FF6F3B91</color>
+    <color name="fragment_tab_text_unselected">#333</color>
+</resources>
