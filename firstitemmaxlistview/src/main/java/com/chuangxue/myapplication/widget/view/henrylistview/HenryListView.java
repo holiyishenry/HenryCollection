@@ -388,6 +388,10 @@ public class HenryListView extends ListView implements OnScrollListener {
     private int ITEM_HEIGHT;//标准item高,
     private int mITEM_MAX_HEIGHT = 0;
     private int mLastFirstVisiblePosition = 0;
+    /**
+     * 手势是否为上滑，false则为下滑
+     */
+    private boolean isUpMove = false;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -422,7 +426,7 @@ public class HenryListView extends ListView implements OnScrollListener {
         // 用户轻触触摸屏，由1个MotionEvent ACTION_DOWN触发
         @Override
         public boolean onDown(MotionEvent e) {
-            Log.i("status", "onDown");
+//            Log.i("status", "onDown");
             return false;
         }
         /**
@@ -447,8 +451,10 @@ public class HenryListView extends ListView implements OnScrollListener {
             //将值4舍5入到最接近的整数或指定的小数位数，上滑动时distanceY<0,下滑动时distanceY>0
             if(distanceY < 0){
                 smoothScrollBy(Math.round(distanceY), 0);//滑动
+                isUpMove = true;
             }else{
                 smoothScrollBy(Math.round(distanceY * 3), 0);//滑动
+                isUpMove = false;
             }
             if (canScrollVertically(Math.round(distanceY))) {
                 distanceOneItem += Math.round(distanceY);//同一个item滑动的距离，当item切换时需要清0
@@ -468,7 +474,7 @@ public class HenryListView extends ListView implements OnScrollListener {
                 } else {
                     mLastDistanceOneItem = distanceOneItem;
                 }
-                mLastFirstVisiblePosition = getFirstVisiblePosition();
+//                mLastFirstVisiblePosition = getFirstVisiblePosition();
             } else {//当item切换时触发，如由item0——>itme1，反之亦然，distanceOneItem要清0
                 mLastFirstVisiblePosition = getFirstVisiblePosition();
                 distanceOneItem = 0;
@@ -478,8 +484,8 @@ public class HenryListView extends ListView implements OnScrollListener {
                     mLastDistanceOneItem = -1;
                 }
             }
-            mHandler.sendEmptyMessage(START);
-//            changeItemHeightOnScroll();
+//            mHandler.sendEmptyMessage(START);
+            changeItemHeightOnScroll();
             return false;
         }
 
@@ -514,25 +520,34 @@ public class HenryListView extends ListView implements OnScrollListener {
         }
         if(firstView != null){
             if(firstView.getTop() < 0){
-                if(firstView.getBottom() > firstView.getLayoutParams().height / 2){
-//                    Log.i("info", "endChangeItem1");
+                //剩余的向上滑动
+//                Log.i("info", "bottom & height:" + firstView.getBottom() + "&:" + firstView.getLayoutParams().height);
+                if(firstView.getBottom() >= firstView.getLayoutParams().height / 2){
                     //剩余的向下滑动
-                    mItemSurplusHeight = firstView.getTop();
-                    //将item0放大到最大，item1缩小到正常
-                    changeItemHeightOnFling(mITEM_MAX_HEIGHT, ITEM_HEIGHT);
-                    //参数为正数时，向上滑动，反之，向下滑动
-                    smoothScrollBy(mItemSurplusHeight, 500);
-                    distanceOneItem = 0;
-                }else{
-//                    Log.i("info", "endChangeItem2");
-                    //将item0缩小到正常，item1放大到最大
-                    changeItemHeightOnFling(mITEM_MAX_HEIGHT, mITEM_MAX_HEIGHT);
-                    //剩余的向上滑动
-                    mItemSurplusHeight  = firstView.getBottom();
-                    //参数为正数时，向上滑动，反之，向下滑动
-                    smoothScrollBy(mItemSurplusHeight, 500);
-//                    distanceOneItem = 0;
+                    if(!isUpMove){//下滑动过程
+                        mItemSurplusHeight = firstView.getTop() + 10;
+                        //将item0放大到最大，item1缩小到正常
+                        changeItemHeightOnFling(mITEM_MAX_HEIGHT, ITEM_HEIGHT);
+                        //参数为正数时，向上滑动，反之，向下滑动, mItemSurplusHeight + 10是为了确保item0一定是最大那个item
+                        smoothScrollBy(mItemSurplusHeight, 500);
+                        Log.i("status", "下滑过程向下收");
+                    }else{//上滑动过程
+                        Log.i("status", "上滑过程向下收");
+                    }
+                }else{//余下的向上滑动
+                    if(!isUpMove){//下滑动过程
+                        Log.i("status", "下滑过程向上收");
+                        mItemSurplusHeight  = firstView.getBottom() + 10;
+                        //参数为正数时，向上滑动，反之，向下滑动, mItemSurplusHeight + 10是为了确保item0一定是最大那个item
+                        smoothScrollBy(mItemSurplusHeight, 500);
+                        //将item0缩小到正常，item1放大到最大
+                        changeItemHeightOnFling(0, mITEM_MAX_HEIGHT);
+                    }else{//上滑动过程
+                        Log.i("status", "上滑过程向上收");
+                    }
                 }
+                distanceOneItem = 0;
+                mLastFirstVisiblePosition = getFirstVisiblePosition();
             }
         }
     }
@@ -540,18 +555,20 @@ public class HenryListView extends ListView implements OnScrollListener {
     private void changeItemHeightOnFling(int changeHeight, int changeHeight1){
         int i = 0;
         View item0 = getChildAt(i);
+        Log.i("info", "count:" + getChildCount());
         if(item0.hashCode() == mHeaderView.hashCode()){
             item0 = getChildAt(++i);
         }
         View item1 = getChildAt(i + 1);
-        if(item0 != null && item1 != null){
+        if(item0 != null && changeHeight > 0){
             item0.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight));
+        }
+        if(item1 != null && changeHeight1 > 0){
             item1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight1));
         }
     }
 
     private void changeItemHeightOnScroll() {
-
         int i = 0;
         View item0 = getChildAt(i);
         if(item0.hashCode() == mHeaderView.hashCode()){
@@ -562,7 +579,7 @@ public class HenryListView extends ListView implements OnScrollListener {
         int change;
         int changeHeight;
         if (distanceOneItem == 0) return;
-        Log.i("info", "distanceOneItem:" + distanceOneItem);
+//        Log.i("info", "distanceOneItem:" + distanceOneItem);
         /**
          * 根据distanceOneItem的值调控item的高度
          * 1、当distanceOneItem > 0,且distanceOneItem不断增大时，item0缩小，item1放大（同一个item下滑）
@@ -600,16 +617,15 @@ public class HenryListView extends ListView implements OnScrollListener {
                 changeHeight1 = ITEM_HEIGHT;
             }
             change = item1.getHeight() - changeHeight1;
-            changeHeight = item0.getHeight() + change;//放大
+            changeHeight = item0.getLayoutParams().height + change;//放大
             if (changeHeight > mITEM_MAX_HEIGHT) {
                 changeHeight = mITEM_MAX_HEIGHT;
             }
             if (changeHeight <= ITEM_HEIGHT) {
                 changeHeight = ITEM_HEIGHT;
             }
-            if(changeHeight > item0.getLayoutParams().height){
-                item0.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight));
-            }
+            //item0从隐藏后高度是adapter中item的默认高度,即ITEM_HEIGHT，所以出现时需要不断放大
+            item0.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight));
             item1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight1));
         }
     }
