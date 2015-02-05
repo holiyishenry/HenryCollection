@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class TestMainActivity extends Activity implements HenryListView.HenryLis
         mAdapter = new FirstItemMaxAdapter();
         mListView.setAdapter(mAdapter);
         mListView.setItemHeight(ITEM_HEIGHT);
-        mListView.setItemMaxHeight(mScreenWidth);
+        mListView.setItemMaxHeight(mScreenWidth / 3 * 2);
 
         mListView.setOnItemClickListener(new AbsListView.OnItemClickListener() {
             @Override
@@ -218,14 +219,14 @@ public class TestMainActivity extends Activity implements HenryListView.HenryLis
                 viewHolder = new ViewHolder();
                 view = LayoutInflater.from(TestMainActivity.this).inflate(R.layout.first_item_max_item, null);
                 viewHolder.cover = (ImageView) view.findViewById(R.id.cover);
-                viewHolder.itemLayout = (LinearLayout) view.findViewById(R.id.list_item_layout);
+                viewHolder.itemLayout = (RelativeLayout) view.findViewById(R.id.list_item_layout);
                 view.setTag(viewHolder);
             }else {
                 viewHolder = (ViewHolder)view.getTag();
             }
             if (position == 0 && isFisrt) {
                 isFisrt = false;
-                viewHolder.itemLayout.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, mScreenWidth));
+                viewHolder.itemLayout.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, mScreenWidth / 3 * 2));
             } else {
                 viewHolder.itemLayout.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, ITEM_HEIGHT));
             }
@@ -235,7 +236,7 @@ public class TestMainActivity extends Activity implements HenryListView.HenryLis
         }
 
         class ViewHolder {
-            LinearLayout itemLayout;
+            RelativeLayout itemLayout;
             TextView name;
             ImageView cover;
         }
