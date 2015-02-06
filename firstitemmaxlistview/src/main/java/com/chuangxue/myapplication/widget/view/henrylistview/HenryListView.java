@@ -385,9 +385,6 @@ public class HenryListView extends ListView implements OnScrollListener {
 	}
 
     //------------------------------------first item max init-----------------------------------------
-    private final int START = 1;
-    private final int END = 2;
-    private final int ENDMOVE = 3;
     private int ITEM_HEIGHT;//标准item高,
     private int mITEM_MAX_HEIGHT = 0;
     private int mLastFirstVisiblePosition = 0;
@@ -413,6 +410,25 @@ public class HenryListView extends ListView implements OnScrollListener {
      * android 手势判断类
      */
     private GestureDetector mGestureDetector;
+    private final int START = 1;
+    private final int END = 2;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case START:
+//                    Log.i("info", "设置高度开始 : " + msg.arg1);
+//                    Log.i("info", "设置高度开始 : " + msg.arg2);
+                    firstItemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, firstItemView.getLayoutParams().height + msg.arg1));
+                    secondItemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, secondItemView.getLayoutParams().height + msg.arg2));
+                    break;
+                case END:
+//                    Log.i("info", "设置高度结束");
+                    setParamsThread = null;
+                    break;
+            }
+        }
+    };
 
     private class MyGestureDetector implements GestureDetector.OnGestureListener{
         // 用户轻触触摸屏，由1个MotionEvent ACTION_DOWN触发
@@ -432,7 +448,7 @@ public class HenryListView extends ListView implements OnScrollListener {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             Log.i("status", "onSingleTapUp");
-//            postEndChangeItem();
+            postEndChangeItem();
             return false;
         }
 
@@ -493,7 +509,7 @@ public class HenryListView extends ListView implements OnScrollListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 //            Log.i("status", "onFling");
-//            postEndChangeItem();
+            postEndChangeItem();
             return false;
         }
     }
@@ -526,31 +542,31 @@ public class HenryListView extends ListView implements OnScrollListener {
         if(firstView != null){
             if(firstView.getTop() < 0){
                 if(firstView.getBottom() >= firstView.getLayoutParams().height / 2){ //剩余的向下滑动
-                    changeItemHeightOnFling(mITEM_MAX_HEIGHT, ITEM_HEIGHT);
+                    changeItemHeightOnFling(mITEM_MAX_HEIGHT, ITEM_HEIGHT, 30);
                     if(!isUpMove){//下滑动过程
                         //Log.i("status", "下滑过程向下收");
                         mItemSurplusHeight = firstView.getTop() + 5;
                         //将item0放大到最大，item1缩小到正常
-                        smoothScrollBy(mItemSurplusHeight,  1200);
+                        smoothScrollBy(mItemSurplusHeight,  600);
                     }else{//上滑动过程
 //                        Log.i("status", "上滑过程向下收");
                         mItemSurplusHeight = firstView.getTop();
                         //将item0放大到最大，item1缩小到正常
-                        smoothScrollBy(mItemSurplusHeight,  1200);
+                        smoothScrollBy(mItemSurplusHeight,  600);
                     }
                 }else{//余下的向上滑动
                     if(!isUpMove){//下滑动过程
 //                        Log.i("status", "下滑过程向上收");
                         mItemSurplusHeight  = firstView.getBottom() + 5;
                         //参数为正数时，向上滑动，反之，向下滑动, mItemSurplusHeight + 10是为了确保item0一定是最大那个item
-                        smoothScrollBy(mItemSurplusHeight,  1200);
+                        smoothScrollBy(mItemSurplusHeight,  600);
                         //将item0缩小到正常，item1放大到最大
-                        changeItemHeightOnFling(0, mITEM_MAX_HEIGHT);
+                        changeItemHeightOnFling(0, mITEM_MAX_HEIGHT, 30);
                     }else{//上滑动过程
                         mItemSurplusHeight  =  firstView.getBottom() + 5;
                         //参数为正数时，向上滑动，反之，向下滑动, mItemSurplusHeight + 10是为了确保item0一定是最大那个item
-                        smoothScrollBy(mItemSurplusHeight,  1000);
-                        changeItemHeightOnFling(0, mITEM_MAX_HEIGHT);
+                        smoothScrollBy(mItemSurplusHeight,  600);
+                        changeItemHeightOnFling(0, mITEM_MAX_HEIGHT, 30);
 //                        Log.i("status", "上滑过程向上收");
                     }
                 }
@@ -561,20 +577,87 @@ public class HenryListView extends ListView implements OnScrollListener {
         }
         lock = false;
     }
+    private Thread setParamsThread;
+    private View firstItemView, secondItemView;
 
-    private void changeItemHeightOnFling(int changeHeight, int changeHeight1){
+    /**
+     * 在onscroll结束或者手势抬起时设置好item的高度
+     * @param changeHeight
+     * @param changeHeight1
+     * @param speed 速度值不能太小，越小则变化越快，太大会卡顿，太小会跟不上变化，一般30-50较合适
+     */
+    private void changeItemHeightOnFling(final int changeHeight,final int changeHeight1, final int speed){
         int i = 0;
-        View item0 = getChildAt(i);
-        if(item0.hashCode() == mHeaderView.hashCode()){
-            item0 = getChildAt(++i);
+        firstItemView = getChildAt(i);
+        if(firstItemView.hashCode() == mHeaderView.hashCode()){
+            firstItemView = getChildAt(++i);
         }
-        View item1 = getChildAt(i + 1);
-        if(item0 != null && changeHeight > 0){
-            item0.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight));
+        secondItemView = getChildAt(++i);
+
+        if(setParamsThread == null && firstItemView!= null && secondItemView != null){
+            setParamsThread = new Thread(new Runnable() {
+                @Override
+                public void run(){
+                    int count0 = 0, count1 = 0, last0 = 0, last1 = 0;
+                    if(changeHeight > 0){
+                        count0 = Math.abs(changeHeight - firstItemView.getLayoutParams().height) / speed;
+                        last0 = (changeHeight - firstItemView.getLayoutParams().height) % speed;
+                    }
+                    if(changeHeight1 > 0){
+                        count1 = Math.abs(changeHeight1 - secondItemView.getLayoutParams().height) / speed;
+                        last1 = (changeHeight1 - secondItemView.getLayoutParams().height) % speed;
+                    }
+                    //尚未过渡完成
+                    while(count0 >= 0 || count1 >= 0){
+                        try {
+                            Thread.sleep(speed);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Message message = mHandler.obtainMessage();
+                        message.what = START;
+                        if(count0 > 0){
+                            if(last0 > 0){
+                                message.arg1 = speed;//正数时增大，负数是减小
+                            }else{
+                                message.arg1 = -speed;//正数时增大，负数是减小
+                            }
+                        }else if(count0 == 0){
+                            message.arg1 = last0;
+                        }
+                        if(count1 > 0){
+                            if(last1 > 0){
+                                message.arg2 = speed;//正数时增大，负数是减小
+                            }else{
+                                message.arg2 = -speed;//正数时增大，负数是减小
+                            }
+                        }else if(count1 == 0){
+                            message.arg2 = last1;
+                        }
+                        mHandler.sendMessage(message);
+                        count0--;
+                        count1--;
+                    }
+                    mHandler.sendEmptyMessage(END);
+                }
+            });
+            setParamsThread.start();
         }
-        if(item1 != null && changeHeight1 > 0){
-            item1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight1));
+
+        for(;i < getChildCount();){
+            View childView = getChildAt(++i);
+            if(childView != null && childView.hashCode() != mFooterView.hashCode()){
+                //确保其他item高度为默认高度
+                childView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, ITEM_HEIGHT));
+            }
         }
+
+//        if(firstItemView != null && changeHeight > 0){
+//            firstItemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight));
+//        }
+//        if(secondItemView != null && changeHeight1 > 0){
+//            secondItemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, changeHeight1));
+//        }
     }
 
     private void postChangeItemHeightOnScroll(){
