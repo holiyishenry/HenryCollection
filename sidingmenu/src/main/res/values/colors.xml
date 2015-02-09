@@ -1,0 +1,7 @@
+<resources>
+
+    <!-- The default background of the menu. 四方向的菜单颜色-->
+    <color name="md__defaultBackground">#FF555555</color>
+    <color name="md__transparent">#00000000</color>
+
+</resources>

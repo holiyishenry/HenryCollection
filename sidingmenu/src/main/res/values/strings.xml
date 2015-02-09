@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">侧滑菜单</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_guide_hint">GuideHintActivity</string>
+    <string name="title_activity_right_siding">RightSidingActivity</string>
+    <string name="sample_topmenu">top menu</string>
+
+    <!-- 四方向菜单 -->
+    <string name="md__drawerOpenIndicatorDesc">Close drawer</string>
+    <string name="md__drawerClosedIndicatorDesc">Open drawer</string>
+    <string name="title_activity_complex_test">ComplexTestActivity</string>
+
+</resources>

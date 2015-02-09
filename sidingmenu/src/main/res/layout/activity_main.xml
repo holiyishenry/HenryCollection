@@ -1,0 +1,30 @@
+<!-- 侧边栏菜单最简单的实现 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  	>
+  	<!-- android:scrollbars="none" 隐藏掉滚动条 -->
+	<com.holiy.sidingmenu.BaseSidingMenu
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:scrollbars="none"
+	    android:background="@drawable/menu"
+	    >
+	    <LinearLayout 
+	        android:layout_height="match_parent"
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        >
+	        <include layout="@layout/menu_layout"/>
+	        
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:background="@drawable/content"
+	            >
+	            
+	        </LinearLayout>
+	    </LinearLayout>
+	</com.holiy.sidingmenu.BaseSidingMenu>
+  
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<!-- 添加了自定义的属性来改变侧边保留内容宽度， 特别注意要注意xmlns要定义好，后面是manifest的包名 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holiy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  	>
+  	<!-- android:scrollbars="none" 隐藏掉滚动条 -->
+	<com.holiy.sidingmenuV6.BaseSidingMenuV6
+	    android:id="@+id/id_menu"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/menu"
+	    android:scrollbars="none"
+	    holiy:rightPadding="100dp"
+	    >
+	    <LinearLayout 
+	        android:layout_height="match_parent"
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        >	     
+	        <!-- 左边菜单 -->
+	        <include layout="@layout/menu_layout6"/>
+	        <!-- 内容 -->
+	       	<include layout="@layout/content_layout"/>
+	        <!-- 右边菜单 -->
+	        <include layout="@layout/right_menu_layout6"/>
+	         
+	    </LinearLayout>
+	</com.holiy.sidingmenuV6.BaseSidingMenuV6>
+</RelativeLayout>

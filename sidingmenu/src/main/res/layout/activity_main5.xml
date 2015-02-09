@@ -1,0 +1,63 @@
+<!-- 添加了自定义的属性来改变侧边保留内容宽度， 特别注意要注意xmlns要定义好，后面是manifest的包名 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:holiy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  	>
+  	<!-- android:scrollbars="none" 隐藏掉滚动条 -->
+	<com.holiy.sidingmenuV5.BaseSidingMenuV5
+	    android:id="@+id/id_menu"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/menu"
+	    android:scrollbars="none"
+	    holiy:rightPadding="70dp"
+	    >
+	    <LinearLayout 
+	        android:layout_height="match_parent"
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        >
+	        <!-- 左边菜单 -->
+	        <include layout="@layout/menu_layout"/>
+	        
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:background="@drawable/content"
+	            >
+	            <RelativeLayout 
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                >
+	               	<Button 
+	                	android:onClick="toggleMenu"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content"
+	                	android:text="toggle"
+	                	android:layout_alignParentLeft="true"
+	                />
+	            	<Button 
+	                	android:onClick="toggleRightMenu"
+	                	android:layout_width="wrap_content"
+	                	android:layout_height="wrap_content"
+	                	android:text="right"
+	                	android:layout_alignParentRight="true"
+	                />
+	            	
+	            </RelativeLayout>
+	          	<ListView 
+	          	    	android:layout_width="match_parent"
+	          	    	android:layout_height="match_parent"
+	          	    	android:id="@+id/list"
+	          	    	android:background="#60A0FB"
+	          	    >
+	          	</ListView>
+	        </LinearLayout>
+	        <!-- 右边菜单 -->
+	        <include layout="@layout/right_menu_layout"/>
+	    </LinearLayout>
+	</com.holiy.sidingmenuV5.BaseSidingMenuV5>
+  
+</RelativeLayout>
