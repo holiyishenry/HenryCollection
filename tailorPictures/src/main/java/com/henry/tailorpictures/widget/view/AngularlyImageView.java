@@ -142,7 +142,10 @@ public class AngularlyImageView extends View
             } else
                 mHeight = desire;
         }
-
+        if(mSrc.getWidth() > mWidth || mSrc.getHeight() > mHeight){
+            int min = Math.min(mWidth, mHeight);
+            mSrc = Bitmap.createScaledBitmap(mSrc, min, min, false);
+        }
         setMeasuredDimension(mWidth, mHeight);
 
     }

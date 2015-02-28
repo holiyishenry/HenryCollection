@@ -35,7 +35,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             henry:borderRadius="20dp"
-            henry:src="@drawable/icon"
+            henry:src="@drawable/head2"
+            henry:type="round" />
+        <com.henry.tailorpictures.widget.view.AngularlyImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            henry:borderRadius="10dp"
+            henry:src="@drawable/head2"
+            henry:type="round" />
+        <com.henry.tailorpictures.widget.view.AngularlyImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            henry:borderRadius="10dp"
+            henry:src="@drawable/head1"
             henry:type="round" />
     </LinearLayout>
 
